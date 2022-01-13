@@ -1,10 +1,10 @@
 """
-Programming Project 1: Affine Cipher Implementation
+Programming Project 1: Affine/Substitution Cipher Implementation
 Author: Sam Hoag
 Date: January 12, 2022
 Instructor: Dr. Cutter
 
-This program provides functions to encrypt and decrypt a string using the affine cipher and a provided key.
+This program provides functions to encrypt and decrypt a string using the affine and substitution ciphers and a provided key.
 """
 import random
 from math import gcd
