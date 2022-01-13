@@ -159,21 +159,50 @@ def substitution_cipher_decrypt(ciphered_alphabet, plain_alphabet, ciphered_text
     return plaintext
 
 
+def affine_cipher_test(alphabet, key, text):
+
+    ciphered = affine_cipher_encrypt(key, alphabet, text)
+
+    print("Plaintext in: " + text)
+    print("Ciphered text: " + ciphered)
+    print("Plaintext out: " + affine_cipher_decrypt(key, alphabet, ciphered))
+
+
+def substitution_cipher_test(alphabet, text):
+
+    ciphered_alpha_list = substitution_cipher_build_ciphered_alphabet(alphabet)
+    ciphered_text = substitution_cipher_encrypt_decrypt(alphabet, ciphered_alpha_list, text)
+    deciphered_text = substitution_cipher_encrypt_decrypt(ciphered_alpha_list, alphabet, ciphered_text)
+
+    print("Plain alphabet in: " + str(alphabet))
+    print("Ciphered alphabet out: " + str(ciphered_alpha_list))
+    print(" ")
+    print("Plaintext in: " + text)
+    print("Ciphered text out: " + ciphered_text)
+    print("")
+    print("Ciphered text in:" + ciphered_text)
+    print("Plaintext out: " + deciphered_text)
+
+
 def main():
     """
     Main function for the program.
     For the time being, edit alpha_dict to edit the alphabet, edit k to alter the key used to encipher,
     and edit text to edit the plaintext to be enciphered.
-    TODO: Set up user input
-    TODO: automatic alphabet generation based on user input. Would theoretically be less secure for shorter messages,
-          so make it an option not requirement
     """
-    # alpha_dict = {
-    #     "a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12,
-    #     "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24,
-    #     "z": 25, " ": 26, ".": 27, ",": 28, ";": 29
-    # }
-    # k = [23, 2]
+    # For use with the affine cipher
+    affine_alphabet = {
+        "a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12,
+        "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24,
+        "z": 25, " ": 26, ".": 27, ",": 28, ";": 29
+    }
+    affine_key = [23, 2]
+
+    # For use with the substitution cipher
+    substitution_alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+                             't', 'u',
+                             'v', 'w', 'x', 'y', 'z', ' ', '.', ',', ';']
+
     text_simple = "hello world."
     text = "Whatsoever therefore is consequent to a time of Warre, where every man " \
            "is Enemy to every man; the same is consequent to the time, wherein men " \
@@ -187,19 +216,15 @@ def main():
            "Letters; no Society; and which is worst of all, continuall feare, and " \
            "danger of violent death; And the life of man, solitary, poore, nasty, " \
            "brutish, and short."
-    #
-    # print("plaintext in: " + text)
-    # ciphered = affine_cipher_encrypt(k, alpha_dict, text)
-    # print("ciphered text: " + ciphered)
-    # print("plaintext out: " + affine_cipher_decrypt(k, alpha_dict, ciphered))
 
-    alpha_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-                  'v', 'w', 'x', 'y', 'z', ' ', '.', ',', ';']
-    ciphered_alpha_list = substitution_cipher_build_ciphered_alphabet(alpha_list)
-    ciphered_text = substitution_cipher_encrypt_decrypt(alpha_list, ciphered_alpha_list, text)
-    print(ciphered_text)
-    deciphered_text = substitution_cipher_encrypt_decrypt(ciphered_alpha_list, alpha_list, ciphered_text)
-    print(deciphered_text)
+    print("=============================")
+    print("Affine Cipher Test")
+    print("-----------------------------")
+    affine_cipher_test(affine_alphabet, affine_key, text)
+    print("=============================")
+    print("Substitution Cipher Test")
+    print("-----------------------------")
+    substitution_cipher_test(substitution_alphabet, text)
 
 
 if __name__ == '__main__':
