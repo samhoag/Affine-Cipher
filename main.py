@@ -1,7 +1,26 @@
+"""
+Programming Project 1: Affine Cipher Implementation
+Author: Sam Hoag
+Date: January 12, 2022
+Instructor: Dr. Cutter
+
+This program provides functions to encrypt and decrypt a string using the affine cipher and a provided key.
+"""
+
+
+
+
 from math import gcd
 
 
 def affine_cipher_verify_key(key, alphabet_len):
+    """
+    Verifies that a key to be used to encrypt a message with the affine cipher is a valid one. For a key to be valid,
+    key[0] and the length of the alphabet being used must be coprime. Additionally, 0 < key[1] < length of alphabet.
+    :param key: List of 2 integers to check
+    :param alphabet_len: Integer - the length of the alphabet
+    :return: Boolean - True if key is valid, False otherwise
+    """
     # checks if a coprime with alphabet_len && a != 1 or 0
     if gcd(key[0], alphabet_len) != 1 and 0 < key[0] < alphabet_len:
         print("Key value: " + str(key[0]) + " is not coprime with alphabet size: " + str(alphabet_len) +
@@ -18,6 +37,16 @@ def affine_cipher_verify_key(key, alphabet_len):
 
 
 def affine_cipher_encrypt(key, alphabet_dict, plaintext):
+    """
+    Encrypts a provided plain text message of the provided alphabet using a provided key after checking the
+    key's validity.
+    :param key: List of 2 integers - Integer at index 0 must be coprime with the length of the alphabet. Integer at
+                index 1 must be greater than 0 and less than the length of the alphabet (0 < key[1] < alphabet length)
+    :param alphabet_dict: Dictionary - Contains char letters as keys and corresponding integers as values.
+                          !!! The same alphabet must be used for encryption and decryption !!!
+    :param plaintext: String - The readable text to be enciphered.
+    :return: String - Ciphered text
+    """
     # alphabet should be a dictionary with letters as keys and ints as values
     # int_dict vice versa
     m = len(alphabet_dict)
@@ -40,6 +69,15 @@ def affine_cipher_encrypt(key, alphabet_dict, plaintext):
 
 
 def affine_cipher_decrypt(key, alphabet_dict, ciphertext):
+    """
+    Decrypts a provided ciphered text message of the provided alphabet using a provided key.
+    Key is assumed to be valid and is not checked.
+    :param key: List of 2 integers
+    :param alphabet_dict: Dictionary - Contains char letters as keys and corresponding integers as values.
+                          !!! The same alphabet must be used for encryption and decryption !!!
+    :param ciphertext: String - The ciphered text to be deciphered.
+    :return: String - The deciphered plaintext
+    """
     m = len(alphabet_dict)
     int_dict = dict(zip(alphabet_dict.values(), alphabet_dict.keys()))
     ciphertext = ciphertext.lower()
@@ -56,6 +94,12 @@ def affine_cipher_decrypt(key, alphabet_dict, ciphertext):
 
 
 def main():
+    """
+    Main function for the program.
+    For the time being, edit alpha_dict to edit the alphabet, edit k to alter the key used to encipher,
+    and edit text to edit the plaintext to be enciphered.
+    TODO: Set up user input
+    """
     alpha_dict = {
         "a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12,
         "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24,
