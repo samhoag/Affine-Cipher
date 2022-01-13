@@ -160,15 +160,32 @@ def substitution_cipher_decrypt(ciphered_alphabet, plain_alphabet, ciphered_text
 
 
 def affine_cipher_test(alphabet, key, text):
+    """
+    For testing the affine cipher.
+    Prints plain, ciphered, and deciphered text.
+
+    :param alphabet: Dictionary[character, integer] - The alphabet of the text to be used for the cipher and
+                                                      corresponding integer values
+    :param key: List of 2 Integers - Values to be used as the key. Ensure they comply with the rules of the
+                                     affine cipher.
+    :param text: String - The text to be used for the cipher.
+    """
 
     ciphered = affine_cipher_encrypt(key, alphabet, text)
 
     print("Plaintext in: " + text)
     print("Ciphered text: " + ciphered)
-    print("Plaintext out: " + affine_cipher_decrypt(key, alphabet, ciphered))
+    print("Deciphered out: " + affine_cipher_decrypt(key, alphabet, ciphered))
 
 
 def substitution_cipher_test(alphabet, text):
+    """
+    For testing the substitution cipher.
+    Prints plain alphabet, ciphered alphabet, plaintext, ciphered, and deciphered text.
+
+    :param alphabet: List of characters - The alphabet of the text to be used for the cipher
+    :param text: String - The text to be used for the cipher
+    """
 
     ciphered_alpha_list = substitution_cipher_build_ciphered_alphabet(alphabet)
     ciphered_text = substitution_cipher_encrypt_decrypt(alphabet, ciphered_alpha_list, text)
