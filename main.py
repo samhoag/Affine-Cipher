@@ -6,7 +6,7 @@ Instructor: Dr. Cutter
 
 This program provides functions to encrypt and decrypt a string using the affine cipher and a provided key.
 """
-
+import random
 from math import gcd
 
 
@@ -90,19 +90,91 @@ def affine_cipher_decrypt(key, alphabet_dict, ciphertext):
     return plaintext
 
 
+def substitution_cipher_build_ciphered_alphabet(raw_alphabet):
+    """
+    Creates a substitution-ciphered alphabet from the provided un-ciphered alphabet.
+    Alphabet is ciphered by randomly popping indices from the plain alphabet and appending them to the ciphered alphabet
+    :param raw_alphabet: List of characters - the alphabet from which to create the ciphered alphabet
+    :return: List of characters - the ciphered alphabet.
+    """
+    plain_alphabet = raw_alphabet.copy()
+    ciphered_alphabet = []
+
+    while len(plain_alphabet) > 0:
+        ciphered_alphabet.append(plain_alphabet.pop(random.randint(0, len(plain_alphabet) - 1)))
+
+    return ciphered_alphabet
+
+
+def substitution_cipher_encrypt_decrypt(alphabet_text, alphabet_convert, text):
+    """
+    Converts a string from alphabet_text to alphabet_convert, which encrypts or decrypts the string accordingly.
+    :param alphabet_text: List of characters - The alphabet that the string to be converted is currently in. If the
+                          string is unencrypted, this parameter should be the plain alphabet. If the string is
+                          encrypted, this parameter should be the ciphered alphabet.
+    :param alphabet_convert: List of characters - The alphabet that the string will be converted to. If the string is
+                             unencrypted, this parameter should be the ciphered alphabet. If the string is encrypted,
+                             this parameter should be the plain alphabet.
+    :param text: String - The text to be ciphered or deciphered.
+    :return: String - Unciphered or ciphered text, depending on the text passed to the function.
+    """
+    text = text.lower()
+    converted_text = ''
+    for c in text:
+        for i in range(0, len(alphabet_text)):
+            if alphabet_text[i] == c:
+                converted_text += alphabet_convert[i]
+                break
+
+    return converted_text
+
+
+def substitution_cipher_encrypt(plain_alphabet, plaintext):
+    """
+    This function should not be used. Use substitution_cipher_encrypt_decrypt() instead.
+    It is only here to provide a clearer understanding of how substitution encryption works.
+    """
+    plaintext = plaintext.lower()
+    ciphered_alphabet = substitution_cipher_build_ciphered_alphabet(plain_alphabet)
+    ciphered_text = ''
+    for c in plaintext:
+        for i in range(0, len(plain_alphabet)):
+            if plain_alphabet[i] == c:
+                ciphered_text += ciphered_alphabet[i]
+                break
+    return [ciphered_text, ciphered_alphabet]
+
+
+def substitution_cipher_decrypt(ciphered_alphabet, plain_alphabet, ciphered_text):
+    """
+    This function should not be used. Use substitution_cipher_encrypt_decrypt() instead.
+    It is only here to provide a clearer understanding of how substitution decryption works.
+    """
+    plaintext = ''
+    for c in ciphered_text:
+        for i in range(0, len(ciphered_alphabet)):
+            if ciphered_alphabet[i] == c:
+                plaintext += plain_alphabet[i]
+
+    return plaintext
+
+
 def main():
     """
     Main function for the program.
     For the time being, edit alpha_dict to edit the alphabet, edit k to alter the key used to encipher,
     and edit text to edit the plaintext to be enciphered.
     TODO: Set up user input
+    TODO: automatic alphabet generation based on user input. Would theoretically be less secure for shorter messages,
+          so make it an option not requirement
     """
-    alpha_dict = {
-        "a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12,
-        "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24,
-        "z": 25, " ": 26, ".": 27, ",": 28, ";": 29
-    }
-    k = [23, 2]
+    # alpha_dict = {
+    #     "a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12,
+    #     "n": 13, "o": 14, "p": 15, "q": 16, "r": 17, "s": 18, "t": 19, "u": 20, "v": 21, "w": 22, "x": 23, "y": 24,
+    #     "z": 25, " ": 26, ".": 27, ",": 28, ";": 29
+    # }
+    # k = [23, 2]
+    text_simple = "hello world."
     text = "Whatsoever therefore is consequent to a time of Warre, where every man " \
            "is Enemy to every man; the same is consequent to the time, wherein men " \
            "live without other security, than what their own strength, and their " \
@@ -115,11 +187,19 @@ def main():
            "Letters; no Society; and which is worst of all, continuall feare, and " \
            "danger of violent death; And the life of man, solitary, poore, nasty, " \
            "brutish, and short."
+    #
+    # print("plaintext in: " + text)
+    # ciphered = affine_cipher_encrypt(k, alpha_dict, text)
+    # print("ciphered text: " + ciphered)
+    # print("plaintext out: " + affine_cipher_decrypt(k, alpha_dict, ciphered))
 
-    print("plaintext in: " + text)
-    ciphered = affine_cipher_encrypt(k, alpha_dict, text)
-    print("ciphered text: " + ciphered)
-    print("plaintext out: " + affine_cipher_decrypt(k, alpha_dict, ciphered))
+    alpha_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+                  'v', 'w', 'x', 'y', 'z', ' ', '.', ',', ';']
+    ciphered_alpha_list = substitution_cipher_build_ciphered_alphabet(alpha_list)
+    ciphered_text = substitution_cipher_encrypt_decrypt(alpha_list, ciphered_alpha_list, text)
+    print(ciphered_text)
+    deciphered_text = substitution_cipher_encrypt_decrypt(ciphered_alpha_list, alpha_list, ciphered_text)
+    print(deciphered_text)
 
 
 if __name__ == '__main__':
