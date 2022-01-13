@@ -118,8 +118,9 @@ def substitution_cipher_encrypt_decrypt(alphabet_text, alphabet_convert, text):
     :param text: String - The text to be ciphered or deciphered.
     :return: String - Unciphered or ciphered text, depending on the text passed to the function.
     """
-    text = text.lower()
+    # text = text.lower()
     converted_text = ''
+    # TODO see if the time complexity can be improved here. O(n^2) at the moment.
     for c in text:
         for i in range(0, len(alphabet_text)):
             if alphabet_text[i] == c:
@@ -195,7 +196,7 @@ def substitution_cipher_test(alphabet, text):
     print("Ciphered alphabet out: " + str(ciphered_alpha_list))
     print(" ")
     print("Plaintext in: " + text)
-    print("Ciphered text out: " + ciphered_text)
+    print("Ciphered text out: " + ciphered_text.rstrip())
     print("")
     print("Ciphered text in:" + ciphered_text)
     print("Plaintext out: " + deciphered_text)
@@ -216,32 +217,42 @@ def main():
     affine_key = [23, 2]
 
     # For use with the substitution cipher
-    substitution_alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-                             't', 'u',
-                             'v', 'w', 'x', 'y', 'z', ' ', '.', ',', ';']
+    substitution_alphabet = randomChar = ['a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F',
+                                          'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L',
+                                          'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R',
+                                          's', 'S', 't', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x',
+                                          'X', 'y', 'Y', 'z', 'Z', '1', '2', '3', '4', '5', '6', '7',
+                                          '8', '9', ' ', '.', '[', ']', ',', ';', '-', '!', '?']
 
     text_simple = "hello world."
-    text = "Whatsoever therefore is consequent to a time of Warre, where every man " \
-           "is Enemy to every man; the same is consequent to the time, wherein men " \
-           "live without other security, than what their own strength, and their " \
-           "own invention shall furnish them withall. In such condition, there is " \
-           "no place for Industry; because the fruit thereof is uncertain; and " \
-           "consequently no Culture of the Earth; no Navigation, nor use of the " \
-           "commodities that may be imported by Sea; no commodious Building; no " \
-           "Instruments of moving, and removing such things as require much force; " \
-           "no Knowledge of the face of the Earth; no account of Time; no Arts; no " \
-           "Letters; no Society; and which is worst of all, continuall feare, and " \
-           "danger of violent death; And the life of man, solitary, poore, nasty, " \
-           "brutish, and short."
+    hobbes = "Whatsoever therefore is consequent to a time of Warre, where every man " \
+             "is Enemy to every man; the same is consequent to the time, wherein men " \
+             "live without other security, than what their own strength, and their " \
+             "own invention shall furnish them withall. In such condition, there is " \
+             "no place for Industry; because the fruit thereof is uncertain; and " \
+             "consequently no Culture of the Earth; no Navigation, nor use of the " \
+             "commodities that may be imported by Sea; no commodious Building; no " \
+             "Instruments of moving, and removing such things as require much force; " \
+             "no Knowledge of the face of the Earth; no account of Time; no Arts; no " \
+             "Letters; no Society; and which is worst of all, continuall feare, and " \
+             "danger of violent death; And the life of man, solitary, poore, nasty, " \
+             "brutish, and short."
+
+    # Does not always work perfectly because the cipher sometimes is such that a special string character is
+    # generated. For this reason, \, ', and " were removed. Whenever these characters are found in the plaintext,
+    # they are simply ignored. Additionally, the original text contains "returns" that are not represented by \n,
+    # meaning there are some words with no spaces.
+    # Only works if DoI.txt is in the same directory as this file.
+    jefferson = open("DoI.txt").read()
 
     print("=============================")
     print("Affine Cipher Test")
     print("-----------------------------")
-    affine_cipher_test(affine_alphabet, affine_key, text)
+    affine_cipher_test(affine_alphabet, affine_key, text_simple)
     print("=============================")
     print("Substitution Cipher Test")
     print("-----------------------------")
-    substitution_cipher_test(substitution_alphabet, text)
+    substitution_cipher_test(substitution_alphabet, jefferson)
 
 
 if __name__ == '__main__':
