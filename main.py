@@ -7,9 +7,6 @@ Instructor: Dr. Cutter
 This program provides functions to encrypt and decrypt a string using the affine cipher and a provided key.
 """
 
-
-
-
 from math import gcd
 
 
