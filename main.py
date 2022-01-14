@@ -95,15 +95,9 @@ def main():
              "danger of violent death; And the life of man, solitary, poore, nasty, " \
              "brutish, and short."
 
-    # Does not always work perfectly because the cipher sometimes is such that a special string character is
-    # generated. For this reason, \, ', and " were removed. Whenever these characters are found in the plaintext,
-    # they are simply ignored. Additionally, the original text contains "returns" that are not represented by \n,
-    # meaning there are some words with no spaces.
-    # Only works if DoI.txt is in the same directory as this file.
-    jefferson = open("DoI.txt").read()
-
     alphabet_source_string = '`1234567890-=qwertyuiop[]asdfghjkl;"' + "'zxcvbnm,./!@#$%^&*()_+QWERTYUIOP{" \
                                                                       "}|ASDFGHJKL:ZXCVBNM<>? "
+
     alphabet = Alphabet(alphabet_source_string)
 
     print("=============================")
