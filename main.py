@@ -7,87 +7,10 @@ Instructor: Dr. Cutter
 This program provides functions to encrypt and decrypt a string using the affine and substitution ciphers and a provided key.
 """
 import random
-from math import gcd
+import string
 
-
-def affine_cipher_verify_key(key, alphabet_len):
-    """
-    Verifies that a key to be used to encrypt a message with the affine cipher is a valid one. For a key to be valid,
-    key[0] and the length of the alphabet being used must be coprime. Additionally, 0 < key[1] < length of alphabet.
-    :param key: List of 2 integers to check
-    :param alphabet_len: Integer - the length of the alphabet
-    :return: Boolean - True if key is valid, False otherwise
-    """
-    # checks if a coprime with alphabet_len && a != 1 or 0
-    if gcd(key[0], alphabet_len) != 1 and 0 < key[0] < alphabet_len:
-        print("Key value: " + str(key[0]) + " is not coprime with alphabet size: " + str(alphabet_len) +
-              " or is outside of the range 0 < key value < " + str(alphabet_len) + ".")
-        return False
-    # checks if b is < alphabet_len && b > 0
-    if alphabet_len > key[1] > 0:
-        return True
-
-    # returns if b value not valid.
-    print("Key value: " + str(key[1]) + " is invalid. Select a value greater than 0 and less than " + str(
-        alphabet_len) + ".")
-    return False
-
-
-def affine_cipher_encrypt(key, alphabet_dict, plaintext):
-    """
-    Encrypts a provided plain text message of the provided alphabet using a provided key after checking the
-    key's validity.
-    :param key: List of 2 integers - Integer at index 0 must be coprime with the length of the alphabet. Integer at
-                index 1 must be greater than 0 and less than the length of the alphabet (0 < key[1] < alphabet length)
-    :param alphabet_dict: Dictionary - Contains char letters as keys and corresponding integers as values.
-                          !!! The same alphabet must be used for encryption and decryption !!!
-    :param plaintext: String - The readable text to be enciphered.
-    :return: String - Ciphered text
-    """
-    # alphabet should be a dictionary with letters as keys and ints as values
-    # int_dict vice versa
-    m = len(alphabet_dict)
-    good_key = affine_cipher_verify_key(key, m)
-    if not good_key:
-        return None
-    plaintext = plaintext.lower()
-
-    int_dict = dict(zip(alphabet_dict.values(), alphabet_dict.keys()))
-    ciphered_text = ""
-    a = key[0]
-    b = key[1]
-
-    for p in plaintext:
-        x = alphabet_dict[p]
-        y = ((a * x) + b) % m
-        ciphered_text += int_dict[y]
-
-    return ciphered_text
-
-
-def affine_cipher_decrypt(key, alphabet_dict, ciphertext):
-    """
-    Decrypts a provided ciphered text message of the provided alphabet using a provided key.
-    Key is assumed to be valid and is not checked.
-    :param key: List of 2 integers
-    :param alphabet_dict: Dictionary - Contains char letters as keys and corresponding integers as values.
-                          !!! The same alphabet must be used for encryption and decryption !!!
-    :param ciphertext: String - The ciphered text to be deciphered.
-    :return: String - The deciphered plaintext
-    """
-    m = len(alphabet_dict)
-    int_dict = dict(zip(alphabet_dict.values(), alphabet_dict.keys()))
-    ciphertext = ciphertext.lower()
-    plaintext = ""
-    a_inverse = pow(key[0], -1, m)
-    b = key[1]
-
-    for c in ciphertext:
-        y = alphabet_dict[c]
-        x = (a_inverse * (y - b)) % m
-        plaintext += int_dict[x]
-
-    return plaintext
+from AffineCipher import AffineCipher
+from Alphabet import Alphabet
 
 
 def substitution_cipher_build_ciphered_alphabet(raw_alphabet):
@@ -171,12 +94,13 @@ def affine_cipher_test(alphabet, key, text):
                                      affine cipher.
     :param text: String - The text to be used for the cipher.
     """
+    affine_cipher = AffineCipher(key, alphabet)
 
-    ciphered = affine_cipher_encrypt(key, alphabet, text)
+    ciphered = affine_cipher.affine_cipher_encrypt(text)
 
     print("Plaintext in: " + text)
     print("Ciphered text: " + ciphered)
-    print("Deciphered out: " + affine_cipher_decrypt(key, alphabet, ciphered))
+    print("Deciphered out: " + affine_cipher.affine_cipher_decrypt(ciphered))
 
 
 def substitution_cipher_test(alphabet, text):
@@ -208,6 +132,7 @@ def main():
     For the time being, edit alpha_dict to edit the alphabet, edit k to alter the key used to encipher,
     and edit text to edit the plaintext to be enciphered.
     """
+
     # For use with the affine cipher
     affine_alphabet = {
         "a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7, "i": 8, "j": 9, "k": 10, "l": 11, "m": 12,
@@ -217,12 +142,15 @@ def main():
     affine_key = [23, 2]
 
     # For use with the substitution cipher
-    substitution_alphabet = randomChar = ['a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F',
-                                          'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L',
-                                          'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R',
-                                          's', 'S', 't', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x',
-                                          'X', 'y', 'Y', 'z', 'Z', '1', '2', '3', '4', '5', '6', '7',
-                                          '8', '9', ' ', '.', '[', ']', ',', ';', '-', '!', '?']
+    substitution_alphabet = ['a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F',
+                             'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L',
+                             'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R',
+                             's', 'S', 't', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x',
+                             'X', 'y', 'Y', 'z', 'Z', '1', '2', '3', '4', '5', '6', '7',
+                             '8', '9', ' ', '.', '[', ']', ',', ';', '-', '!', '?']
+
+    substitution_alphabet_simple = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+                                    'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
     text_simple = "hello world."
     hobbes = "Whatsoever therefore is consequent to a time of Warre, where every man " \
@@ -245,14 +173,18 @@ def main():
     # Only works if DoI.txt is in the same directory as this file.
     jefferson = open("DoI.txt").read()
 
+    alphabet_source_string = '`1234567890-=qwertyuiop[]asdfghjkl;"' + "'zxcvbnm,./!@#$%^&*()_+QWERTYUIOP{" \
+                                                                      "}|ASDFGHJKL:ZXCVBNM<>? "
+    alphabet = Alphabet(alphabet_source_string)
+
     print("=============================")
     print("Affine Cipher Test")
     print("-----------------------------")
-    affine_cipher_test(affine_alphabet, affine_key, text_simple)
+    affine_cipher_test(alphabet.affine_alphabet, affine_key, hobbes)
     print("=============================")
     print("Substitution Cipher Test")
     print("-----------------------------")
-    substitution_cipher_test(substitution_alphabet, jefferson)
+    # substitution_cipher_test(substitution_alphabet, jefferson)
 
 
 if __name__ == '__main__':
