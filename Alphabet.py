@@ -1,8 +1,12 @@
+import random
+
+
 class Alphabet:
     def __init__(self, chars):
         chars = list(chars)
         self.alphabet = self._order_chars(chars)
         self.affine_alphabet = self._create_dict(self.alphabet)
+        self.substitution_alphabet = self._create_substitution_alphabet(self.alphabet)
 
     @staticmethod
     def _order_chars(chars):
@@ -29,7 +33,17 @@ class Alphabet:
         return alpha_dict
 
     @staticmethod
-    def _create_list(self):
-        alpha_list = []
-        for c in self.char:
-            alpha_list.append(c)
+    def _create_substitution_alphabet(alphabet):
+        """
+        Creates a substitution-ciphered alphabet from the provided un-ciphered alphabet.
+        Alphabet is ciphered by randomly popping indices from the plain alphabet and appending them to the ciphered alphabet
+        :param raw_alphabet: List of characters - the alphabet from which to create the ciphered alphabet
+        :return: List of characters - the ciphered alphabet.
+        """
+        plain_alphabet = alphabet.copy()
+        ciphered_alphabet = []
+
+        while len(plain_alphabet) > 0:
+            ciphered_alphabet.append(plain_alphabet.pop(random.randint(0, len(plain_alphabet) - 1)))
+
+        return ciphered_alphabet

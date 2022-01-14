@@ -11,76 +11,7 @@ import string
 
 from AffineCipher import AffineCipher
 from Alphabet import Alphabet
-
-
-def substitution_cipher_build_ciphered_alphabet(raw_alphabet):
-    """
-    Creates a substitution-ciphered alphabet from the provided un-ciphered alphabet.
-    Alphabet is ciphered by randomly popping indices from the plain alphabet and appending them to the ciphered alphabet
-    :param raw_alphabet: List of characters - the alphabet from which to create the ciphered alphabet
-    :return: List of characters - the ciphered alphabet.
-    """
-    plain_alphabet = raw_alphabet.copy()
-    ciphered_alphabet = []
-
-    while len(plain_alphabet) > 0:
-        ciphered_alphabet.append(plain_alphabet.pop(random.randint(0, len(plain_alphabet) - 1)))
-
-    return ciphered_alphabet
-
-
-def substitution_cipher_encrypt_decrypt(alphabet_text, alphabet_convert, text):
-    """
-    Converts a string from alphabet_text to alphabet_convert, which encrypts or decrypts the string accordingly.
-    :param alphabet_text: List of characters - The alphabet that the string to be converted is currently in. If the
-                          string is unencrypted, this parameter should be the plain alphabet. If the string is
-                          encrypted, this parameter should be the ciphered alphabet.
-    :param alphabet_convert: List of characters - The alphabet that the string will be converted to. If the string is
-                             unencrypted, this parameter should be the ciphered alphabet. If the string is encrypted,
-                             this parameter should be the plain alphabet.
-    :param text: String - The text to be ciphered or deciphered.
-    :return: String - Unciphered or ciphered text, depending on the text passed to the function.
-    """
-    # text = text.lower()
-    converted_text = ''
-    # TODO see if the time complexity can be improved here. O(n^2) at the moment.
-    for c in text:
-        for i in range(0, len(alphabet_text)):
-            if alphabet_text[i] == c:
-                converted_text += alphabet_convert[i]
-                break
-
-    return converted_text
-
-
-def substitution_cipher_encrypt(plain_alphabet, plaintext):
-    """
-    This function should not be used. Use substitution_cipher_encrypt_decrypt() instead.
-    It is only here to provide a clearer understanding of how substitution encryption works.
-    """
-    plaintext = plaintext.lower()
-    ciphered_alphabet = substitution_cipher_build_ciphered_alphabet(plain_alphabet)
-    ciphered_text = ''
-    for c in plaintext:
-        for i in range(0, len(plain_alphabet)):
-            if plain_alphabet[i] == c:
-                ciphered_text += ciphered_alphabet[i]
-                break
-    return [ciphered_text, ciphered_alphabet]
-
-
-def substitution_cipher_decrypt(ciphered_alphabet, plain_alphabet, ciphered_text):
-    """
-    This function should not be used. Use substitution_cipher_encrypt_decrypt() instead.
-    It is only here to provide a clearer understanding of how substitution decryption works.
-    """
-    plaintext = ''
-    for c in ciphered_text:
-        for i in range(0, len(ciphered_alphabet)):
-            if ciphered_alphabet[i] == c:
-                plaintext += plain_alphabet[i]
-
-    return plaintext
+from SubstitutionCipher import SubstitutionCipher
 
 
 def affine_cipher_test(alphabet, key, text):
@@ -111,18 +42,16 @@ def substitution_cipher_test(alphabet, text):
     :param alphabet: List of characters - The alphabet of the text to be used for the cipher
     :param text: String - The text to be used for the cipher
     """
+    substitution_cipher = SubstitutionCipher(alphabet.alphabet, alphabet.substitution_alphabet)
 
-    ciphered_alpha_list = substitution_cipher_build_ciphered_alphabet(alphabet)
-    ciphered_text = substitution_cipher_encrypt_decrypt(alphabet, ciphered_alpha_list, text)
-    deciphered_text = substitution_cipher_encrypt_decrypt(ciphered_alpha_list, alphabet, ciphered_text)
+    ciphered_text = substitution_cipher.encrypt_decrypt(True, text)
+    deciphered_text = substitution_cipher.encrypt_decrypt(False, ciphered_text)
 
-    print("Plain alphabet in: " + str(alphabet))
-    print("Ciphered alphabet out: " + str(ciphered_alpha_list))
-    print(" ")
+    print("Plain alphabet in: " + str(alphabet.alphabet))
+    print("Ciphered alphabet out: " + str(alphabet.substitution_alphabet))
     print("Plaintext in: " + text)
-    print("Ciphered text out: " + ciphered_text.rstrip())
-    print("")
-    print("Ciphered text in:" + ciphered_text)
+    print("Ciphered text out: " + ciphered_text)
+    print("Ciphered text in: " + ciphered_text)
     print("Plaintext out: " + deciphered_text)
 
 
@@ -184,7 +113,7 @@ def main():
     print("=============================")
     print("Substitution Cipher Test")
     print("-----------------------------")
-    # substitution_cipher_test(substitution_alphabet, jefferson)
+    substitution_cipher_test(alphabet, hobbes)
 
 
 if __name__ == '__main__':

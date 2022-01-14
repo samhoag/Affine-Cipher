@@ -1,6 +1,7 @@
 from math import gcd
 
 
+# TODO update comments
 class AffineCipher:
     def __init__(self, key, alphabet):
         self.key = key
