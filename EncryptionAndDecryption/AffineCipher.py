@@ -1,9 +1,14 @@
 from math import gcd
 
 
-# TODO update comments
 class AffineCipher:
     def __init__(self, key, alphabet):
+        """
+        Initializer for the AffineCipher class
+        :param key: List containing two integers to be used as the key for the cipher. Index 0 must conform to the rules
+                    confining the value of a, and index 1 must be a valid value for b.
+        :param alphabet: Alphabet - the alphabet to use for the cipher operations
+        """
         self.key = key
         self.alphabet = alphabet
         self.m = len(alphabet)
@@ -19,8 +24,6 @@ class AffineCipher:
         """
         Verifies that a key to be used to encrypt a message with the affine cipher is a valid one. For a key to be valid,
         key[0] and the length of the alphabet being used must be coprime. Additionally, 0 < key[1] < length of alphabet.
-        :param key: List of 2 integers to check
-        :param self.alphabet_len: Integer - the length of the alphabet
         :return: Boolean - True if key is valid, False otherwise
         """
         # checks if a coprime with self.alphabet_len && a != 1 or 0
@@ -43,10 +46,6 @@ class AffineCipher:
         """
         Encrypts a provided plain text message of the provided alphabet using a provided key after checking the
         key's validity.
-        :param key: List of 2 integers - Integer at index 0 must be coprime with the length of the alphabet. Integer at
-                    index 1 must be greater than 0 and less than the length of the alphabet (0 < key[1] < alphabet length)
-        :param alphabet_dict: Dictionary - Contains char letters as keys and corresponding integers as values.
-                              !!! The same alphabet must be used for encryption and decryption !!!
         :param plaintext: String - The readable text to be enciphered.
         :return: String - Ciphered text
         """
@@ -66,9 +65,6 @@ class AffineCipher:
         """
         Decrypts a provided ciphered text message of the provided alphabet using a provided key.
         Key is assumed to be valid and is not checked.
-        :param key: List of 2 integers
-        :param alphabet_dict: Dictionary - Contains char letters as keys and corresponding integers as values.
-                              !!! The same alphabet must be used for encryption and decryption !!!
         :param ciphertext: String - The ciphered text to be deciphered.
         :return: String - The deciphered plaintext
         """

@@ -3,6 +3,10 @@ import random
 
 class Alphabet:
     def __init__(self, chars):
+        """
+        Initializer for the Alphabet class.
+        :param chars: string containing all characters to be used in the alphabet
+        """
         chars = list(chars)
         self.alphabet = self._order_chars(chars)
         self.affine_alphabet = self._create_dict(self.alphabet)
@@ -25,6 +29,11 @@ class Alphabet:
 
     @staticmethod
     def _create_dict(alphabet):
+        """
+        
+        :param alphabet:
+        :return:
+        """
         alpha_dict = {}
         v = 0
         for c in alphabet:
